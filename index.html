@@ -1,312 +1,1639 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <meta charset="utf-8">
-  <!-- Meta tags for social media banners, these should be filled in appropriatly as they are your "business card" -->
-  <!-- Replace the content tag with appropriate information -->
-  <meta name="description" content="DESCRIPTION META TAG">
-  <meta property="og:title" content="SOCIAL MEDIA TITLE TAG"/>
-  <meta property="og:description" content="SOCIAL MEDIA DESCRIPTION TAG TAG"/>
-  <meta property="og:url" content="URL OF THE WEBSITE"/>
-  <!-- Path to banner image, should be in the path listed below. Optimal dimenssions are 1200X630-->
-  <meta property="og:image" content="static/image/your_banner_image.png" />
-  <meta property="og:image:width" content="1200"/>
-  <meta property="og:image:height" content="630"/>
+    <meta charset="utf-8">
+    <meta name="description" content="Automated CAD Modeling Sequence Generation from Text Descriptions via Transformer-Based Large Language Models">
+    <meta property="og:title" content="Automated CAD Modeling Sequence Generation"/>
+    <meta property="og:description" content="A novel language-guided framework for industrial design automation integrating LLMs with computer-automated design"/>
+    <meta property="og:url" content="URL OF THE WEBSITE"/>
+    <meta property="og:image" content="static/image/banner_image.png" />
+    <meta property="og:image:width" content="1200"/>
+    <meta property="og:image:height" content="630"/>
 
+    <meta name="twitter:title" content="Automated CAD Modeling Sequence Generation">
+    <meta name="twitter:description" content="A novel framework for generating CAD models from text descriptions using Transformer and LLMs">
+    <meta name="twitter:image" content="static/images/twitter_banner.png">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="keywords" content="CAD, Computer-Aided Design, Large Language Models, Transformer, Design Automation, CAutoD">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
 
-  <meta name="twitter:title" content="TWITTER BANNER TITLE META TAG">
-  <meta name="twitter:description" content="TWITTER BANNER DESCRIPTION META TAG">
-  <!-- Path to banner image, should be in the path listed below. Optimal dimenssions are 1200X600-->
-  <meta name="twitter:image" content="static/images/your_twitter_banner_image.png">
-  <meta name="twitter:card" content="summary_large_image">
-  <!-- Keywords for your paper to be indexed by-->
-  <meta name="keywords" content="KEYWORDS SHOULD BE PLACED HERE">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Automated CAD Modeling Sequence Generation from Text Descriptions</title>
+    <link rel="icon" type="image/x-icon" href="static/images/icon.ico">
+    <link href="https://fonts.googleapis.com/css?family=Google+Sans|Noto+Sans|Castoro" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.9.3/css/bulma.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/jpswalsh/academicons@1/css/academicons.min.css">
 
+    <style>
+        /* 添加动画样式 */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
 
-  <title>Academic Project Page</title>
-  <link rel="icon" type="image/x-icon" href="static/images/favicon.ico">
-  <link href="https://fonts.googleapis.com/css?family=Google+Sans|Noto+Sans|Castoro"
-  rel="stylesheet">
+        @keyframes slideInLeft {
+            from {
+                opacity: 0;
+                transform: translateX(-50px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
 
-  <link rel="stylesheet" href="static/css/bulma.min.css">
-  <link rel="stylesheet" href="static/css/bulma-carousel.min.css">
-  <link rel="stylesheet" href="static/css/bulma-slider.min.css">
-  <link rel="stylesheet" href="static/css/fontawesome.all.min.css">
-  <link rel="stylesheet"
-  href="https://cdn.jsdelivr.net/gh/jpswalsh/academicons@1/css/academicons.min.css">
-  <link rel="stylesheet" href="static/css/index.css">
+        @keyframes slideInRight {
+            from {
+                opacity: 0;
+                transform: translateX(50px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
 
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-  <script src="https://documentcloud.adobe.com/view-sdk/main.js"></script>
-  <script defer src="static/js/fontawesome.all.min.js"></script>
-  <script src="static/js/bulma-carousel.min.js"></script>
-  <script src="static/js/bulma-slider.min.js"></script>
-  <script src="static/js/index.js"></script>
+        @keyframes scaleIn {
+            from {
+                opacity: 0;
+                transform: scale(0.8);
+            }
+            to {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+
+        @keyframes pulse {
+            0% {
+                transform: scale(1);
+            }
+            50% {
+                transform: scale(1.05);
+            }
+            100% {
+                transform: scale(1);
+            }
+        }
+
+        @keyframes countUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* 目录样式 */
+        .table-of-contents {
+            position: fixed;
+            top: 50%;
+            right: 20px;
+            transform: translateY(-50%);
+            background: white;
+            border-radius: 8px;
+            padding: 1rem;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+            z-index: 1000;
+            max-width: 200px;
+            opacity: 0;
+            transition: all 0.3s ease;
+        }
+
+        .table-of-contents.visible {
+            opacity: 1;
+        }
+
+        .table-of-contents h4 {
+            margin-bottom: 0.5rem;
+            font-weight: bold;
+            font-size: 0.9rem;
+            color: #3273dc;
+        }
+
+        .toc-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .toc-item {
+            margin-bottom: 0.3rem;
+        }
+
+        .toc-link {
+            display: block;
+            padding: 0.3rem 0.5rem;
+            color: #666;
+            text-decoration: none;
+            font-size: 0.8rem;
+            border-radius: 4px;
+            transition: all 0.3s ease;
+            border-left: 2px solid transparent;
+        }
+
+        .toc-link:hover {
+            background-color: #f8f9fa;
+            color: #3273dc;
+            border-left-color: #3273dc;
+        }
+
+        .toc-link.active {
+            background-color: #3273dc;
+            color: white;
+            border-left-color: #2366d1;
+        }
+
+        /* 增强的作者卡片样式 */
+        .author-card {
+            position: absolute;
+            background: white;
+            border-radius: 12px;
+            padding: 1.5rem;
+            box-shadow: 0 12px 32px rgba(0,0,0,0.2);
+            z-index: 1001;
+            min-width: 320px;
+            opacity: 0;
+            transform: translateY(10px);
+            transition: all 0.3s ease;
+            pointer-events: none;
+            border: 1px solid #e8e8e8;
+        }
+
+        .author-card.visible {
+            opacity: 1;
+            transform: translateY(0);
+            pointer-events: auto;
+        }
+
+        .author-card-content {
+            display: flex;
+            gap: 1rem;
+            align-items: center;
+        }
+
+        .author-avatar {
+            width: 70px;
+            height: 70px;
+            border-radius: 12px;
+            flex-shrink: 0;
+            overflow: hidden;
+            position: relative;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+        }
+
+        .author-avatar img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.3s ease;
+        }
+
+        .author-avatar:hover img {
+            transform: scale(1.1);
+        }
+
+        .author-avatar-fallback {
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+            font-size: 1.5rem;
+        }
+
+        .author-info {
+            flex: 1;
+        }
+
+        .author-name {
+            font-weight: bold;
+            margin-bottom: 0.3rem;
+            color: #3273dc;
+            font-size: 1.1rem;
+        }
+
+        .author-affiliation {
+            font-size: 0.85rem;
+            color: #666;
+            margin-bottom: 0.5rem;
+            line-height: 1.4;
+        }
+
+        .author-website {
+            font-size: 0.85rem;
+        }
+
+        .author-website a {
+            color: #3273dc;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.3rem;
+            transition: color 0.3s ease;
+        }
+
+        .author-website a:hover {
+            text-decoration: underline;
+            color: #2366d1;
+        }
+
+        /* 基础样式 */
+        .hero {
+            background-color: #ffffff;
+            color: #363636;
+        }
+
+        .publication-title {
+            font-weight: bold;
+            margin-bottom: 1rem;
+            animation: fadeInUp 1s ease-out;
+        }
+
+        .author-block {
+            margin-right: 1rem;
+            position: relative;
+            display: inline-block;
+            animation: fadeInUp 1.2s ease-out;
+        }
+
+        .author-block a {
+            color: #3273dc;
+            text-decoration: none;
+            transition: color 0.3s ease;
+            cursor: pointer;
+        }
+
+        .author-block a:hover {
+            text-decoration: underline;
+            color: #2366d1;
+        }
+
+        .publication-links .button {
+            margin: 0.2rem;
+            transition: all 0.3s ease;
+            animation: scaleIn 0.8s ease-out;
+        }
+
+        .publication-links .button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+        }
+
+        .method-section {
+            background-color: #f8f9fa;
+            padding: 2rem 0;
+        }
+
+        .results-section {
+            background-color: #ffffff;
+            padding: 2rem 0;
+        }
+
+        .framework-image {
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+            margin: 1rem 0;
+            transition: all 0.3s ease;
+        }
+
+        .framework-image:hover {
+            transform: scale(1.02);
+            box-shadow: 0 8px 16px rgba(0,0,0,0.15);
+        }
+
+        .results-table {
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            padding: 1.5rem;
+            margin: 1rem 0;
+            transition: all 0.3s ease;
+        }
+
+        .results-table:hover {
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+        }
+
+        .highlight-number {
+            color: #3273dc;
+            font-weight: bold;
+            font-size: 1.2em;
+        }
+
+        .innovation-card {
+            background: white;
+            border-radius: 8px;
+            padding: 1.5rem;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            margin: 1rem 0;
+            transition: all 0.4s ease;
+            opacity: 0;
+            transform: translateY(30px);
+        }
+
+        .innovation-card.animate {
+            animation: fadeInUp 0.8s ease-out forwards;
+        }
+
+        .innovation-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+        }
+
+        .innovation-icon {
+            font-size: 2rem;
+            color: #3273dc;
+            margin-bottom: 1rem;
+            transition: all 0.3s ease;
+        }
+
+        .innovation-card:hover .innovation-icon {
+            animation: pulse 1s ease-in-out;
+            color: #2366d1;
+        }
+
+        .comparison-table {
+            overflow-x: auto;
+        }
+
+        .comparison-table table {
+            width: 100%;
+            min-width: 600px;
+        }
+
+        .comparison-table tbody tr {
+            transition: all 0.3s ease;
+        }
+
+        .comparison-table tbody tr:hover {
+            background-color: #f8f9fa;
+            transform: scale(1.02);
+        }
+
+        .best-result {
+            background-color: #d4edda;
+            font-weight: bold;
+            animation: pulse 2s ease-in-out infinite;
+        }
+
+        .section-separator {
+            height: 2px;
+            background: linear-gradient(90deg, transparent, #3273dc, transparent);
+            margin: 2rem 0;
+            opacity: 0;
+            animation: fadeInUp 1s ease-out forwards;
+        }
+
+        .code-block {
+            background-color: #f8f9fa;
+            border-left: 4px solid #3273dc;
+            padding: 1rem;
+            font-family: 'Courier New', monospace;
+            margin: 1rem 0;
+            transition: all 0.3s ease;
+        }
+
+        .code-block:hover {
+            border-left-color: #2366d1;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+
+        .ccs-example {
+            background-color: #fff;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            padding: 1rem;
+            margin: 1rem 0;
+            transition: all 0.3s ease;
+        }
+
+        .ccs-example:hover {
+            border-color: #3273dc;
+            box-shadow: 0 2px 8px rgba(50,115,220,0.1);
+        }
+
+        .dataset-stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+            margin: 2rem 0;
+        }
+
+        .stat-card {
+            background: white;
+            border-radius: 8px;
+            padding: 1.5rem;
+            text-align: center;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            transition: all 0.4s ease;
+            opacity: 0;
+            transform: translateY(30px);
+        }
+
+        .stat-card.animate {
+            animation: countUp 0.8s ease-out forwards;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-5px) scale(1.05);
+            box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+        }
+
+        .stat-number {
+            font-size: 2rem;
+            font-weight: bold;
+            color: #3273dc;
+            transition: color 0.3s ease;
+        }
+
+        .stat-card:hover .stat-number {
+            color: #2366d1;
+        }
+
+        .stat-label {
+            font-size: 0.9rem;
+            color: #666;
+            margin-top: 0.5rem;
+        }
+
+        .pipeline-step {
+            display: flex;
+            align-items: center;
+            margin: 1rem 0;
+            padding: 1rem;
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            transition: all 0.3s ease;
+            opacity: 0;
+            transform: translateX(-50px);
+        }
+
+        .pipeline-step.animate {
+            animation: slideInLeft 0.8s ease-out forwards;
+        }
+
+        .pipeline-step:hover {
+            transform: translateX(10px);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+        }
+
+        .step-number {
+            background: #3273dc;
+            color: white;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            margin-right: 1rem;
+            flex-shrink: 0;
+            transition: all 0.3s ease;
+        }
+
+        .pipeline-step:hover .step-number {
+            background: #2366d1;
+            animation: pulse 1s ease-in-out;
+        }
+
+        .demo-gallery {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1rem;
+            margin: 2rem 0;
+        }
+
+        .demo-item {
+            background: white;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            transition: all 0.4s ease;
+            opacity: 0;
+            transform: scale(0.9);
+        }
+
+        .demo-item.animate {
+            animation: scaleIn 0.8s ease-out forwards;
+        }
+
+        .demo-item:hover {
+            transform: translateY(-10px) scale(1.02);
+            box-shadow: 0 12px 24px rgba(0,0,0,0.15);
+        }
+
+        .demo-image {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+            transition: all 0.3s ease;
+        }
+
+        .demo-item:hover .demo-image {
+            transform: scale(1.1);
+        }
+
+        .demo-content {
+            padding: 1rem;
+        }
+
+        .demo-title {
+            font-weight: bold;
+            margin-bottom: 0.5rem;
+            color: #3273dc;
+            transition: color 0.3s ease;
+        }
+
+        .demo-item:hover .demo-title {
+            color: #2366d1;
+        }
+
+        .demo-description {
+            font-size: 0.9rem;
+            color: #666;
+        }
+
+        /* 滚动动画触发器 */
+        .scroll-animate {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 0.8s ease-out;
+        }
+
+        .scroll-animate.animate {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* 页面加载动画 */
+        .page-loader {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: #fff;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+            opacity: 1;
+            transition: opacity 0.5s ease-out;
+        }
+
+        .page-loader.hidden {
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        .loader-spinner {
+            width: 40px;
+            height: 40px;
+            border: 4px solid #f3f3f3;
+            border-top: 4px solid #3273dc;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        /* 响应式动画调整 */
+        @media (max-width: 768px) {
+            .table-of-contents {
+                display: none;
+            }
+
+            .innovation-card:hover {
+                transform: translateY(-5px);
+            }
+
+            .demo-item:hover {
+                transform: translateY(-5px) scale(1.01);
+            }
+
+            .author-card {
+                min-width: 280px;
+            }
+            .footer-logos {
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                gap: 3rem;
+                flex-wrap: wrap;
+            }
+            .footer-logos {
+                gap: 2rem;
+            }
+            .logo-item {
+                display: flex;
+                align-items: center;
+                gap: 1rem;
+                transition: transform 0.3s ease;
+            }
+
+            .logo-item:hover {
+                transform: translateY(-2px);
+            }
+
+            .logo-item img {
+                height: 60px;
+                width: auto;
+                object-fit: contain;
+            }
+            .logo-text {
+                font-size: 1rem;
+            }
+        }
+
+        /* 目录滚动隐藏 */
+        @media (max-width: 1200px) {
+            .table-of-contents {
+                display: none;
+            }
+        }
+    </style>
 </head>
 <body>
+<!-- 页面加载动画 -->
+<div class="page-loader" id="pageLoader">
+    <div class="loader-spinner"></div>
+</div>
 
+<!-- 目录 -->
+<div class="table-of-contents" id="tableOfContents">
+    <h4><i class="fas fa-list"></i> Contents</h4>
+    <ul class="toc-list">
+        <li class="toc-item"><a href="#abstract" class="toc-link">Abstract</a></li>
+        <li class="toc-item"><a href="#innovations" class="toc-link">Key Innovations</a></li>
+        <li class="toc-item"><a href="#methodology" class="toc-link">Methodology</a></li>
+        <li class="toc-item"><a href="#results" class="toc-link">Results</a></li>
+        <li class="toc-item"><a href="#application" class="toc-link">Application</a></li>
+        <li class="toc-item"><a href="#pipeline" class="toc-link">Data Pipeline</a></li>
+        <li class="toc-item"><a href="#findings" class="toc-link">Research Findings</a></li>
+        <li class="toc-item"><a href="#limitations" class="toc-link">Limitations</a></li>
+        <li class="toc-item"><a href="#citation" class="toc-link">Citation</a></li>
+    </ul>
+</div>
 
-  <section class="hero">
+<section class="hero">
     <div class="hero-body">
-      <div class="container is-max-desktop">
-        <div class="columns is-centered">
-          <div class="column has-text-centered">
-            <h1 class="title is-1 publication-title">Academic Project Page</h1>
-            <div class="is-size-5 publication-authors">
-              <!-- Paper authors -->
-              <span class="author-block">
-                <a href="FIRST AUTHOR PERSONAL LINK" target="_blank">First Author</a><sup>*</sup>,</span>
-                <span class="author-block">
-                  <a href="SECOND AUTHOR PERSONAL LINK" target="_blank">Second Author</a><sup>*</sup>,</span>
-                  <span class="author-block">
-                    <a href="THIRD AUTHOR PERSONAL LINK" target="_blank">Third Author</a>
-                  </span>
-                  </div>
-
-                  <div class="is-size-5 publication-authors">
-                    <span class="author-block">Institution Name<br>Conferance name and year</span>
-                    <span class="eql-cntrb"><small><br><sup>*</sup>Indicates Equal Contribution</small></span>
-                  </div>
-
-                  <div class="column has-text-centered">
-                    <div class="publication-links">
-                         <!-- Arxiv PDF link -->
-                      <span class="link-block">
-                        <a href="https://arxiv.org/pdf/<ARXIV PAPER ID>.pdf" target="_blank"
-                        class="external-link button is-normal is-rounded is-dark">
-                        <span class="icon">
-                          <i class="fas fa-file-pdf"></i>
+        <div class="container is-max-desktop">
+            <div class="columns is-centered">
+                <div class="column has-text-centered">
+                    <h1 class="title is-1 publication-title">Automated CAD Modeling Sequence Generation from Text Descriptions via Transformer-Based Large Language Models</h1>
+                    <div class="is-size-5 publication-authors">
+                        <span class="author-block">
+                            <a href="mailto:j.x.liao@i4ai.org" target="_blank" data-author="jianxing">Jianxing Liao</a><sup>1*</sup>,
                         </span>
-                        <span>Paper</span>
-                      </a>
-                    </span>
+                        <span class="author-block">
+                            <a href="mailto:j.y.xu@i4ai.org" target="_blank" data-author="junyan">Junyan Xu</a><sup>1*</sup>,
+                        </span>
+                        <span class="author-block">
+                            <a href="mailto:y.t.sun@i4ai.org" target="_blank" data-author="yatao">Yatao Sun</a><sup>1</sup>,
+                        </span>
+                        <span class="author-block">
+                            <a href="mailto:m.w.tang@i4ai.org" target="_blank" data-author="maowen">Maowen Tang</a><sup>1</sup>,
+                        </span>
+                        <span class="author-block">
+                            <a href="#" target="_blank" data-author="sicheng">Sicheng He</a><sup>1</sup>,
+                        </span>
+                        <span class="author-block">
+                            <a href="#" target="_blank" data-author="jingxian">Jingxian Liao</a><sup>1</sup>,
+                        </span>
+                        <span class="author-block">
+                            <a href="mailto:shui.yu@i4ai.org" target="_blank" data-author="shui">Shui Yu</a><sup>1†</sup>,
+                        </span>
+                        <span class="author-block">
+                            <a href="mailto:yun.li@ieee.org" target="_blank" data-author="yun">Yun Li</a><sup>1†</sup>,
+                        </span>
+                        <span class="author-block">
+                            <a href="mailto:x.guan@i4ai.uk" target="_blank" data-author="xiaohong">Xiaohong Guan</a><sup>2</sup>
+                        </span>
+                    </div>
 
-                    <!-- Supplementary PDF link -->
+                    <div class="is-size-5 publication-authors">
+                        <span class="author-block"><sup>1</sup>Shenzhen Institute for Advanced Study, University of Electronic Science and Technology of China, Shenzhen 518000, China<br>
+                        <sup>2</sup>i4AI Ltd, London WCIN3AX, United Kingdom<br>
+                        <strong>ACL 2025</strong></span>
+                        <span class="eql-cntrb"><small><br><sup>*</sup>Equal first authors<br><sup>†</sup>Corresponding authors: Shui.Yu@i4AI.org, Yun.Li@ieee.org</small></span>
+                    </div>
+
+                    <!-- Paper PDF link -->
                     <span class="link-block">
-                      <a href="static/pdfs/supplementary_material.pdf" target="_blank"
-                      class="external-link button is-normal is-rounded is-dark">
-                      <span class="icon">
-                        <i class="fas fa-file-pdf"></i>
-                      </span>
-                      <span>Supplementary</span>
-                    </a>
-                  </span>
+                                <a href="static/pdfs/Automated_CAD_Modeling_Sequence_Generation_from_Text_Descriptions_via_Transformer_Based_Large_Language_Models.pdf" target="_blank"
+                                   class="external-link button is-normal is-rounded is-dark">
+                                    <span class="icon">
+                                      <i class="fas fa-file-pdf"></i>
+                                    </span>
+                                    <span>Paper</span>
+                                </a>
+                            </span>
 
-                  <!-- Github link -->
-                  <span class="link-block">
-                    <a href="https://github.com/YOUR REPO HERE" target="_blank"
-                    class="external-link button is-normal is-rounded is-dark">
-                    <span class="icon">
-                      <i class="fab fa-github"></i>
-                    </span>
-                    <span>Code</span>
-                  </a>
-                </span>
+                            <!-- Github link -->
+                            <span class="link-block">
+                                <a href="https://github.com/lanlanguai/CADLLM" target="_blank"
+                                   class="external-link button is-normal is-rounded is-dark">
+                                    <span class="icon">
+                                      <i class="fab fa-github"></i>
+                                    </span>
+                                    <span>Code</span>
+                                </a>
+                            </span>
 
-                <!-- ArXiv abstract Link -->
-                <span class="link-block">
-                  <a href="https://arxiv.org/abs/<ARXIV PAPER ID>" target="_blank"
-                  class="external-link button is-normal is-rounded is-dark">
-                  <span class="icon">
-                    <i class="ai ai-arxiv"></i>
-                  </span>
-                  <span>arXiv</span>
-                </a>
-              </span>
+                            <!-- HuggingFace Dataset Link -->
+                            <span class="link-block">
+                                <a href="https://huggingface.co/datasets/lanlanguai/CADLLM" target="_blank"
+                                   class="external-link button is-normal is-rounded is-dark">
+                                    <span class="icon">
+                                      <i class="fas fa-database"></i>
+                                    </span>
+                                    <span>Dataset</span>
+                                </a>
+                            </span>
+
+                            <!-- ArXiv abstract Link -->
+                            <span class="link-block">
+                                <a href="https://arxiv.org/abs/ARXIV_PAPER_ID" target="_blank"
+                                   class="external-link button is-normal is-rounded is-dark">
+                                    <span class="icon">
+                                      <i class="ai ai-arxiv"></i>
+                                    </span>
+                                    <span>arXiv</span>
+                                </a>
+                            </span>
+                        </div>
+                    </div>
+                </div>
             </div>
-          </div>
         </div>
-      </div>
     </div>
-  </div>
 </section>
 
-
-<!-- Teaser video-->
-<section class="hero teaser">
-  <div class="container is-max-desktop">
-    <div class="hero-body">
-      <video poster="" id="tree" autoplay controls muted loop height="100%">
-        <!-- Your video here -->
-        <source src="static/videos/banner_video.mp4"
-        type="video/mp4">
-      </video>
-      <h2 class="subtitle has-text-centered">
-        Aliquam vitae elit ullamcorper tellus egestas pellentesque. Ut lacus tellus, maximus vel lectus at, placerat pretium mi. Maecenas dignissim tincidunt vestibulum. Sed consequat hendrerit nisl ut maximus. 
-      </h2>
-    </div>
-  </div>
-</section>
-<!-- End teaser video -->
-
-<!-- Paper abstract -->
-<section class="section hero is-light">
-  <div class="container is-max-desktop">
-    <div class="columns is-centered has-text-centered">
-      <div class="column is-four-fifths">
-        <h2 class="title is-3">Abstract</h2>
-        <div class="content has-text-justified">
-          <p>
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin ullamcorper tellus sed ante aliquam tempus. Etiam porttitor urna feugiat nibh elementum, et tempor dolor mattis. Donec accumsan enim augue, a vulputate nisi sodales sit amet. Proin bibendum ex eget mauris cursus euismod nec et nibh. Maecenas ac gravida ante, nec cursus dui. Vivamus purus nibh, placerat ac purus eget, sagittis vestibulum metus. Sed vestibulum bibendum lectus gravida commodo. Pellentesque auctor leo vitae sagittis suscipit.
-          </p>
+<!-- 增强的作者卡片模板 -->
+<div class="author-card" id="authorCard">
+    <div class="author-card-content">
+        <div class="author-avatar" id="authorAvatar">
+            <img id="authorPhoto" src="" alt="" style="display: none;">
+            <div class="author-avatar-fallback" id="authorAvatarFallback"></div>
         </div>
-      </div>
+        <div class="author-info">
+            <div class="author-name" id="authorName"></div>
+            <div class="author-affiliation" id="authorAffiliation"></div>
+            <div class="author-website" id="authorWebsite"></div>
+        </div>
     </div>
-  </div>
-</section>
-<!-- End paper abstract -->
-
-
-<!-- Image carousel -->
-<section class="hero is-small">
-  <div class="hero-body">
-    <div class="container">
-      <div id="results-carousel" class="carousel results-carousel">
-       <div class="item">
-        <!-- Your image here -->
-        <img src="static/images/carousel1.jpg" alt="MY ALT TEXT"/>
-        <h2 class="subtitle has-text-centered">
-          First image description.
-        </h2>
-      </div>
-      <div class="item">
-        <!-- Your image here -->
-        <img src="static/images/carousel2.jpg" alt="MY ALT TEXT"/>
-        <h2 class="subtitle has-text-centered">
-          Second image description.
-        </h2>
-      </div>
-      <div class="item">
-        <!-- Your image here -->
-        <img src="static/images/carousel3.jpg" alt="MY ALT TEXT"/>
-        <h2 class="subtitle has-text-centered">
-         Third image description.
-       </h2>
-     </div>
-     <div class="item">
-      <!-- Your image here -->
-      <img src="static/images/carousel4.jpg" alt="MY ALT TEXT"/>
-      <h2 class="subtitle has-text-centered">
-        Fourth image description.
-      </h2>
-    </div>
-  </div>
 </div>
-</div>
-</section>
-<!-- End image carousel -->
 
-
-
-
-<!-- Youtube video -->
-<section class="hero is-small is-light">
-  <div class="hero-body">
-    <div class="container">
-      <!-- Paper video. -->
-      <h2 class="title is-3">Video Presentation</h2>
-      <div class="columns is-centered has-text-centered">
-        <div class="column is-four-fifths">
-          
-          <div class="publication-video">
-            <!-- Youtube embed code here -->
-            <iframe src="https://www.youtube.com/embed/JkaxUblCGz0" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
-          </div>
+<!-- Abstract -->
+<section class="section hero is-light" id="abstract">
+    <div class="container is-max-desktop">
+        <div class="columns is-centered has-text-centered">
+            <div class="column is-four-fifths">
+                <h2 class="title is-3">Abstract</h2>
+                <div class="content has-text-justified">
+                    <p>
+                        Designing complex computer-aided design (CAD) models is often time-consuming due to challenges such as computational inefficiency and the difficulty of generating precise models. We propose a novel language-guided framework for industrial design automation to address these issues, integrating large language models (LLMs) with computer-automated design (CAutoD). Through this framework, CAD models are automatically generated from parameters and appearance descriptions, supporting the automation of design tasks during the detailed CAD design phase.
+                    </p>
+                    <p>
+                        Our approach introduces three key innovations: <strong>(1)</strong> a semi-automated data annotation pipeline that leverages LLMs and vision-language large models (VLLMs) to generate high-quality parameters and appearance descriptions; <strong>(2)</strong> a Transformer-based CAD generator (TCADGen) that predicts modeling sequences via dual-channel feature aggregation; <strong>(3)</strong> an enhanced CAD modeling generation model, called CADLLM, that is designed to refine the generated sequences by incorporating the confidence scores from TCADGen.
+                    </p>
+                    <p>
+                        Experimental results demonstrate that the proposed approach outperforms traditional methods in both accuracy and efficiency, providing a powerful tool for automating industrial workflows and generating complex CAD models from textual prompts.
+                    </p>
+                </div>
+            </div>
         </div>
-      </div>
-    </div>
-  </div>
-</section>
-<!-- End youtube video -->
-
-
-<!-- Video carousel -->
-<section class="hero is-small">
-  <div class="hero-body">
-    <div class="container">
-      <h2 class="title is-3">Another Carousel</h2>
-      <div id="results-carousel" class="carousel results-carousel">
-        <div class="item item-video1">
-          <video poster="" id="video1" autoplay controls muted loop height="100%">
-            <!-- Your video file here -->
-            <source src="static/videos/carousel1.mp4"
-            type="video/mp4">
-          </video>
-        </div>
-        <div class="item item-video2">
-          <video poster="" id="video2" autoplay controls muted loop height="100%">
-            <!-- Your video file here -->
-            <source src="static/videos/carousel2.mp4"
-            type="video/mp4">
-          </video>
-        </div>
-        <div class="item item-video3">
-          <video poster="" id="video3" autoplay controls muted loop height="100%">\
-            <!-- Your video file here -->
-            <source src="static/videos/carousel3.mp4"
-            type="video/mp4">
-          </video>
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
-<!-- End video carousel -->
-
-
-
-
-
-
-<!-- Paper poster -->
-<section class="hero is-small is-light">
-  <div class="hero-body">
-    <div class="container">
-      <h2 class="title">Poster</h2>
-
-      <iframe  src="static/pdfs/sample.pdf" width="100%" height="550">
-          </iframe>
-        
-      </div>
-    </div>
-  </section>
-<!--End paper poster -->
-
-
-<!--BibTex citation -->
-  <section class="section" id="BibTeX">
-    <div class="container is-max-desktop content">
-      <h2 class="title">BibTeX</h2>
-      <pre><code>BibTex Code Here</code></pre>
     </div>
 </section>
-<!--End BibTex citation -->
 
+<!-- Key Innovations -->
+<section class="section" id="innovations">
+    <div class="container is-max-desktop">
+        <h2 class="title is-3 has-text-centered">Key Innovations</h2>
+        <div class="columns">
+            <div class="column">
+                <div class="innovation-card">
+                    <div class="innovation-icon">
+                        <i class="fas fa-robot"></i>
+                    </div>
+                    <h3 class="title is-5">Semi-Automated Annotation Pipeline</h3>
+                    <p>Leverages LLMs and VLLMs to generate high-quality CAD descriptions with automated validation and verification processes, achieving 98.4% automatic pass rate.</p>
+                </div>
+            </div>
+            <div class="column">
+                <div class="innovation-card">
+                    <div class="innovation-icon">
+                        <i class="fas fa-cogs"></i>
+                    </div>
+                    <h3 class="title is-5">TCADGen Architecture</h3>
+                    <p>Transformer-based dual-channel architecture that effectively fuses parameter and appearance features for accurate CAD command sequence generation.</p>
+                </div>
+            </div>
+            <div class="column">
+                <div class="innovation-card">
+                    <div class="innovation-icon">
+                        <i class="fas fa-brain"></i>
+                    </div>
+                    <h3 class="title is-5">CADLLM Enhancement</h3>
+                    <p>Fine-tuned large language model that refines generated sequences using confidence scores, achieving significant performance improvements.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
 
-  <footer class="footer">
-  <div class="container">
-    <div class="columns is-centered">
-      <div class="column is-8">
+<div class="section-separator"></div>
+
+<!-- Method Overview -->
+<section class="method-section" id="methodology">
+    <div class="container is-max-desktop">
+        <h2 class="title is-3 has-text-centered">Methodology</h2>
+
+        <!-- Framework Image -->
+        <div class="has-text-centered">
+            <img src="static/images/Framework Color.png" alt="Framework Overview" class="framework-image" style="width: 100%; max-width: 800px;">
+            <p class="has-text-grey"><em>Figure 1: Overall framework of automated CAD modeling from text descriptions, leveraging Transformer-based sequence generation and LLM-driven refinement.</em></p>
+        </div>
+
+        <!-- Pipeline Steps -->
         <div class="content">
+            <h3 class="title is-4">Pipeline Overview</h3>
 
-          <p>
-            This page was built using the <a href="https://github.com/eliahuhorwitz/Academic-project-page-template" target="_blank">Academic Project Page Template</a> which was adopted from the <a href="https://nerfies.github.io" target="_blank">Nerfies</a> project page.
-            You are free to borrow the source code of this website, we just ask that you link back to this page in the footer. <br> This website is licensed under a <a rel="license"  href="http://creativecommons.org/licenses/by-sa/4.0/" target="_blank">Creative
-            Commons Attribution-ShareAlike 4.0 International License</a>.
-          </p>
+            <div class="pipeline-step">
+                <div class="step-number">1</div>
+                <div>
+                    <h4 class="title is-6">Semi-Automated Data Annotation</h4>
+                    <p>Utilizes multiple LLMs and VLLMs to generate detailed appearance and parameter descriptions, validated through automated consistency checks and reflection optimization.</p>
+                </div>
+            </div>
 
+            <div class="pipeline-step">
+                <div class="step-number">2</div>
+                <div>
+                    <h4 class="title is-6">TCADGen Sequence Generation</h4>
+                    <p>Transformer-based dual-channel architecture processes parameter and appearance descriptions to generate initial CAD command sequences with confidence scores.</p>
+                </div>
+            </div>
+
+            <div class="pipeline-step">
+                <div class="step-number">3</div>
+                <div>
+                    <h4 class="title is-6">CADLLM Enhancement</h4>
+                    <p>Fine-tuned large language model refines the generated sequences using confidence information to produce accurate final CAD commands.</p>
+                </div>
+            </div>
         </div>
-      </div>
+
+        <!-- TCADGen Architecture -->
+        <div class="has-text-centered" style="margin-top: 3rem;">
+            <img src="static/images/TCADGen.png" alt="TCADGen Architecture" class="framework-image" style="width: 100%; max-width: 900px;">
+            <p class="has-text-grey"><em>Figure 2: TCADGen architecture with dual-channel feature aggregator and CAD command sequence decoder.</em></p>
+        </div>
+
+        <!-- CAD Command Sequence Example -->
+        <div class="content" style="margin-top: 2rem;">
+            <h3 class="title is-4">CAD Command Sequence (CCS) Representation</h3>
+            <div class="ccs-example">
+                <strong>Example CCS:</strong>
+                <div class="code-block">
+                    &lt;SOL&gt;<br>
+                    &lt;Line&gt;: x=144, y=112<br>
+                    &lt;Arc&gt;: x=223, y=128, α=64, f=1<br>
+                    &lt;Line&gt;: x=223, y=204<br>
+                    &lt;Extrude&gt;: θ=192, φ=64, γ=192, px=105, py=121, pz=40, s=46, e1=148, e2=128, b=NewBodyFeatureOperation, u=OneSideFeatureExtentType<br>
+                    &lt;EOS&gt;
+                </div>
+                <p>The CCS consists of 2D sketch commands (Line, Arc, Circle) followed by 3D extrusion operations, enabling precise parametric CAD model generation.</p>
+            </div>
+        </div>
     </div>
-  </div>
-</footer>
+</section>
 
-<!-- Statcounter tracking code -->
-  
-<!-- You can add a tracker to track page visits by creating an account at statcounter.com -->
+<!-- Results -->
+<section class="results-section" id="results">
+    <div class="container is-max-desktop">
+        <h2 class="title is-3 has-text-centered">Experimental Results</h2>
 
-    <!-- End of Statcounter Code -->
+        <!-- Performance Statistics -->
+        <div class="dataset-stats">
+            <div class="stat-card">
+                <div class="stat-number">96.6%</div>
+                <div class="stat-label">Command Accuracy</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number">0.983</div>
+                <div class="stat-label">Average LCS Ratio</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number">155503</div>
+                <div class="stat-label">Training Samples</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number">98.4%</div>
+                <div class="stat-label">Auto Annotation Rate</div>
+            </div>
+        </div>
 
-  </body>
-  </html>
+        <!-- Performance Comparison Table -->
+        <div class="results-table">
+            <h3 class="title is-4">Performance Comparison</h3>
+            <div class="comparison-table">
+                <table class="table is-fullwidth is-striped">
+                    <thead>
+                    <tr>
+                        <th>Models</th>
+                        <th>Avg Command ACC</th>
+                        <th>F1</th>
+                        <th>AUC</th>
+                        <th>Line AUC</th>
+                        <th>Arc AUC</th>
+                        <th>Circle AUC</th>
+                        <th>Extrude AUC</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr>
+                        <td>DeepCAD</td>
+                        <td>0.571</td>
+                        <td>0.606</td>
+                        <td>0.747</td>
+                        <td>0.648</td>
+                        <td>0.540</td>
+                        <td>0.587</td>
+                        <td>0.616</td>
+                    </tr>
+                    <tr>
+                        <td>Text2CAD</td>
+                        <td>0.840</td>
+                        <td>0.722</td>
+                        <td>0.819</td>
+                        <td>0.763</td>
+                        <td>0.584</td>
+                        <td>0.751</td>
+                        <td>0.772</td>
+                    </tr>
+                    <tr>
+                        <td>TCADGen</td>
+                        <td>0.890</td>
+                        <td>0.771</td>
+                        <td>0.854</td>
+                        <td>0.808</td>
+                        <td>0.682</td>
+                        <td>0.837</td>
+                        <td>0.781</td>
+                    </tr>
+                    <tr class="best-result">
+                        <td><strong>TCADGen+CADLLM (Ours)</strong></td>
+                        <td><strong>0.966</strong></td>
+                        <td><strong>0.947</strong></td>
+                        <td><strong>0.962</strong></td>
+                        <td><strong>0.957</strong></td>
+                        <td><strong>0.925</strong></td>
+                        <td><strong>0.959</strong></td>
+                        <td><strong>0.942</strong></td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+            <p class="has-text-grey"><em>Our TCADGen+CADLLM achieves significant improvements across all metrics, demonstrating the effectiveness of the dual-stage approach.</em></p>
+        </div>
+
+        <!-- Quality Metrics Comparison -->
+        <div class="results-table">
+            <h3 class="title is-4">Quality Metrics Comparison</h3>
+            <div class="comparison-table">
+                <table class="table is-fullwidth is-striped">
+                    <thead>
+                    <tr>
+                        <th>Method</th>
+                        <th>Model</th>
+                        <th>CD ↓</th>
+                        <th>MMD ↓</th>
+                        <th>JSD ↓</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr>
+                        <td rowspan="4">Transformer-based</td>
+                        <td>DeepCAD</td>
+                        <td>169.93</td>
+                        <td>31.91</td>
+                        <td>45.03</td>
+                    </tr>
+                    <tr>
+                        <td>Text2CAD</td>
+                        <td>142.83</td>
+                        <td>28.98</td>
+                        <td>40.23</td>
+                    </tr>
+                    <tr>
+                        <td>TCADGen</td>
+                        <td>120.99</td>
+                        <td>21.36</td>
+                        <td>35.25</td>
+                    </tr>
+                    <tr>
+                        <td>CAD Translator</td>
+                        <td>-</td>
+                        <td>2.94</td>
+                        <td>10.92</td>
+                    </tr>
+                    <tr>
+                        <td rowspan="4">LLM-based</td>
+                        <td>CADFusion</td>
+                        <td>45.67</td>
+                        <td>3.49</td>
+                        <td>17.11</td>
+                    </tr>
+                    <tr>
+                        <td>DeepCAD+CADLLM</td>
+                        <td>4.25</td>
+                        <td>3.13</td>
+                        <td>8.58</td>
+                    </tr>
+                    <tr>
+                        <td>Text2CAD+CADLLM</td>
+                        <td>4.31</td>
+                        <td>3.12</td>
+                        <td>8.42</td>
+                    </tr>
+                    <tr class="best-result">
+                        <td><strong>TCADGen+CADLLM (Ours)</strong></td>
+                        <td><strong>3.12</strong></td>
+                        <td><strong>2.78</strong></td>
+                        <td><strong>8.38</strong></td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Application Case Study -->
+<section class="section" id="application">
+    <div class="container is-max-desktop">
+        <h2 class="title is-3 has-text-centered">Application: Motorcycle Frame Design</h2>
+        <div class="columns is-vcentered">
+            <div class="column is-half">
+                <img src="static/images/Motorcycle%20Frame.png" alt="Motorcycle Frame Application" class="framework-image">
+            </div>
+            <div class="column is-half">
+                <div class="content">
+                    <h3 class="title is-4">Real-World Industrial Application</h3>
+                    <p>
+                        We demonstrate the practical applicability of our framework through motorcycle frame design automation. The framework generates individual components based on textual descriptions, which are then assembled to create the complete frame structure.
+                    </p>
+                    <ul>
+                        <li><strong>Rapid Prototyping:</strong> Accelerated design iteration from concept to CAD model</li>
+                        <li><strong>Precision Engineering:</strong> Maintains geometric accuracy required for manufacturing</li>
+                        <li><strong>Automated Workflow:</strong> Reduces manual CAD modeling time by 80%</li>
+                        <li><strong>Scalable Design:</strong> Applicable to various mechanical components</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Data Pipeline Visualization -->
+<section class="section is-light" id="pipeline">
+    <div class="container is-max-desktop">
+        <h2 class="title is-3 has-text-centered">Semi-Automated Annotation Pipeline</h2>
+        <div class="has-text-centered">
+            <img src="static/images/Semi%20Automated.png" alt="Data Annotation Pipeline" class="framework-image" style="width: 100%; max-width: 1000px;">
+        </div>
+        <div class="content" style="margin-top: 2rem;">
+            <p>
+                Our annotation pipeline combines automated LLM-based description generation with quality control mechanisms. The system achieves 98.4% automatic annotation success rate through multi-modal validation and reflection optimization processes.
+            </p>
+        </div>
+    </div>
+</section>
+
+<!-- Research Questions and Findings -->
+<section class="section" id="findings">
+    <div class="container is-max-desktop">
+        <h2 class="title is-3 has-text-centered">Research Questions & Key Findings</h2>
+
+        <div class="columns">
+            <div class="column">
+                <div class="innovation-card">
+                    <h3 class="title is-5">RQ1: Annotation Framework Effectiveness</h3>
+                    <p><strong>Finding:</strong> Our LLM-based semi-automated annotation significantly improves quality over baselines, with command accuracy improving from 80.4% to 89.0% (+8.6 percentage points).</p>
+                    <div class="code-block">
+                        LCS_ratio improvement: 0.675 → 1.000 through reflection optimization
+                    </div>
+                </div>
+            </div>
+
+            <div class="column">
+                <div class="innovation-card">
+                    <h3 class="title is-5">RQ2: TCADGen Performance</h3>
+                    <p><strong>Finding:</strong> TCADGen significantly outperforms existing methods, achieving 31.8 percentage point improvement over DeepCAD and 5 percentage point improvement over Text2CAD.</p>
+                    <div class="code-block">
+                        Accuracy: DeepCAD (57.1%) → TCADGen (89.0%)
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="columns">
+            <div class="column">
+                <div class="innovation-card">
+                    <h3 class="title is-5">RQ3: LLM Enhancement Effectiveness</h3>
+                    <p><strong>Finding:</strong> CADLLM + TCADGen achieves 86.4% accuracy and 0.983 LCS ratio, demonstrating superior performance over direct LLM generation approaches.</p>
+                    <div class="code-block">
+                        Direct LLM: 32.8% → CADLLM+TCADGen: 86.4%
+                    </div>
+                </div>
+            </div>
+
+            <div class="column">
+                <div class="innovation-card">
+                    <h3 class="title is-5">Ablation Studies</h3>
+                    <p><strong>Finding:</strong> Both CAD-specific BERT fine-tuning and dual-channel architecture contribute significantly to performance, with removal causing 4+ percentage point drops.</p>
+                    <div class="code-block">
+                        Dual-channel architecture essential for complex commands
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Future Work and Limitations -->
+<section class="section" id="limitations">
+    <div class="container is-max-desktop">
+        <h2 class="title is-3 has-text-centered">Limitations & Future Work</h2>
+
+        <div class="columns">
+            <div class="column is-half">
+                <h3 class="title is-4">Current Limitations</h3>
+                <div class="content">
+                    <ul>
+                        <li><strong>Resource Intensive:</strong> Semi-automatic annotation requires significant LLM calls</li>
+                        <li><strong>Command Distribution:</strong> Imbalanced training data affects robustness for rare operations</li>
+                        <li><strong>Geometric Constraints:</strong> Limited explicit incorporation of structural reasoning</li>
+                        <li><strong>Design Phase Focus:</strong> Primarily supports detailed design, not conceptual design</li>
+                        <li><strong>Scalability:</strong> Manual verification still needed for quality control</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="column is-half">
+                <h3 class="title is-4">Future Research Directions</h3>
+                <div class="content">
+                    <ul>
+                        <li><strong>Geometric Priors:</strong> Integrate constraint-aware learning mechanisms</li>
+                        <li><strong>Conceptual Design:</strong> Extend framework to early design phases</li>
+                        <li><strong>Multi-Modal Input:</strong> Support sketch and image-based design inputs</li>
+                        <li><strong>Real-Time Generation:</strong> Optimize for interactive design workflows</li>
+                        <li><strong>Domain Extension:</strong> Adapt to other CAD domains (architecture, electronics)</li>
+                        <li><strong>Collaborative AI:</strong> Human-AI collaborative design interfaces</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Citation -->
+<section class="section is-light" id="citation">
+    <div class="container is-max-desktop">
+        <h2 class="title is-3 has-text-centered">Citation</h2>
+        <div class="code-block" style="background-color: #f8f9fa; border: 1px solid #ddd; padding: 1.5rem;">
+<pre>@inproceedings{liao2025automated,
+  title={Automated CAD Modeling Sequence Generation from Text Descriptions via Transformer-Based Large Language Models},
+  author={Liao, Jianxing and Xu, Junyan and Sun, Yatao and Tang, Maowen and He, Sicheng and Liao, Jingxian and Yu, Shui and Li, Yun and Guan, Xiaohong},
+  booktitle={Proceedings of the 63rd Annual Meeting of the Association for Computational Linguistics (ACL 2025)},
+  year={2025},
+  organization={Association for Computational Linguistics}
+}</pre>
+        </div>
+    </div>
+</section>
+
+<!-- Acknowledgments -->
+<section class="section">
+    <div class="container is-max-desktop">
+        <h2 class="title is-3 has-text-centered">Acknowledgments</h2>
+        <div class="content has-text-centered">
+            <p>
+                This work is supported by the National Natural Science Foundation of China (Grant No. 52405253),
+                by the Ministry of Science and Technology of China (Grant No. H20240917),
+                and by the Sichuan Province Science and Technology Innovation Seedling Project (Grant No. MZGC20240134).
+            </p>
+        </div>
+    </div>
+</section>
+
+<!-- Footer -->
+<!--<footer class="footer">-->
+<!--    <div class="container">-->
+<!--        <div class="columns is-centered">-->
+<!--            <div class="column is-8">-->
+<!--                <div class="content">-->
+<!--                    <div class="footer-logos">-->
+<!--                        <div class="logo-item">-->
+<!--                            <img src="static/images/logos/sias_logo.png" alt="电子科技大学深圳高等研究院">-->
+<!--                            <div class="logo-text"> Shenzhen Institute for Advanced Study, UESTC </div>-->
+<!--                        </div>-->
+<!--                        <div class="logo-item">-->
+<!--                            <img src="static/images/logos/i4ai.png" alt="i4AI实验室">-->
+<!--                            <div class="logo-text">i4AI.org</div>-->
+<!--                        </div>-->
+<!--                    </div>-->
+<!--                </div>-->
+<!--            </div>-->
+<!--        </div>-->
+<!--    </div>-->
+<!--</footer>-->
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+<script>
+    // 增强的作者信息数据 - 添加照片路径
+    const authorData = {
+        jianxing: {
+            name: "Jianxing Liao",
+            avatar: "JL",
+            photo: "static/images/authors/jianxing_liao.png", // 真实照片路径
+            affiliation: "Shenzhen Institute for Advanced Study, UESTC",
+            website: "https://orcid.org/0009-0008-0185-758X"
+        },
+        junyan: {
+            name: "Junyan Xu",
+            avatar: "JX",
+            photo: "static/images/authors/junyan_xu.png", // 真实照片路径
+            affiliation: "Shenzhen Institute for Advanced Study, UESTC",
+            website: "https://orcid.org/0000-0003-1917-5081"
+        },
+        yatao: {
+            name: "Yatao Sun",
+            avatar: "YS",
+            photo: "static/images/authors/yatao_sun.png", // 真实照片路径
+            affiliation: "Shenzhen Institute for Advanced Study, UESTC",
+            website: "#"
+        },
+        maowen: {
+            name: "Maowen Tang",
+            avatar: "MT",
+            photo: "static/images/authors/maowen_tang.png", // 真实照片路径
+            affiliation: "Shenzhen Institute for Advanced Study, UESTC",
+            website: "#"
+        },
+        sicheng: {
+            name: "Sicheng He",
+            avatar: "SH",
+            photo: "static/images/authors/sicheng_he.png", // 真实照片路径
+            affiliation: "Shenzhen Institute for Advanced Study, UESTC",
+            website: "#"
+        },
+        jingxian: {
+            name: "Jingxian Liao",
+            avatar: "JL",
+            photo: "static/images/authors/jingxian_liao.png", // 真实照片路径
+            affiliation: "Shenzhen Institute for Advanced Study, UESTC",
+            website: "#"
+        },
+        shui: {
+            name: "Shui Yu",
+            avatar: "SY",
+            photo: "static/images/authors/shui_yu.jpg", // 真实照片路径
+            affiliation: "Shenzhen Institute for Advanced Study, UESTC",
+            website: "#"
+        },
+        yun: {
+            name: "Yun Li",
+            avatar: "YL",
+            photo: "static/images/authors/yun_li.png", // 真实照片路径
+            affiliation: "Shenzhen Institute for Advanced Study, UESTC",
+            website: "#"
+        },
+        xiaohong: {
+            name: "Xiaohong Guan",
+            avatar: "XG",
+            photo: "static/images/authors/xiaohong_guan.jpg", // 真实照片路径
+            affiliation: "i4AI Ltd, London WCIN3AX, United Kingdom",
+            website: "#"
+        }
+    };
+
+    // 页面加载完成后隐藏加载动画
+    $(window).on('load', function() {
+        setTimeout(function() {
+            $('#pageLoader').addClass('hidden');
+            // 显示目录
+            setTimeout(() => {
+                $('#tableOfContents').addClass('visible');
+            }, 500);
+        }, 500);
+    });
+
+    // 目录滚动高亮
+    function updateTOCHighlight() {
+        const sections = ['abstract', 'innovations', 'methodology', 'results', 'application', 'pipeline', 'findings', 'limitations', 'citation'];
+        const scrollPos = $(window).scrollTop() + 100;
+
+        let currentSection = '';
+        sections.forEach(section => {
+            const element = $('#' + section);
+            if (element.length && element.offset().top <= scrollPos) {
+                currentSection = section;
+            }
+        });
+
+        $('.toc-link').removeClass('active');
+        if (currentSection) {
+            $(`.toc-link[href="#${currentSection}"]`).addClass('active');
+        }
+    }
+
+    // 增强的作者卡片功能 - 支持真实照片
+    function showAuthorCard(authorKey, element) {
+        const author = authorData[authorKey];
+        if (!author) return;
+
+        const card = $('#authorCard');
+        const rect = element.getBoundingClientRect();
+        const authorPhoto = $('#authorPhoto');
+        const authorAvatarFallback = $('#authorAvatarFallback');
+
+        // 更新卡片内容
+        $('#authorName').text(author.name);
+        $('#authorAffiliation').text(author.affiliation);
+        $('#authorWebsite').html(author.website !== '#' ?
+            `<a href="${author.website}" target="_blank"><i class="fas fa-link"></i> Personal Page</a>` :
+            '<i class="fas fa-link"></i> No website available');
+
+        // 尝试加载真实照片
+        if (author.photo) {
+            // 创建临时图片对象测试照片是否存在
+            const testImage = new Image();
+            testImage.onload = function() {
+                // 照片加载成功，显示真实照片
+                authorPhoto.attr('src', author.photo);
+                authorPhoto.attr('alt', author.name);
+                authorPhoto.show();
+                authorAvatarFallback.hide();
+            };
+            testImage.onerror = function() {
+                // 照片加载失败，显示字母头像
+                authorPhoto.hide();
+                authorAvatarFallback.text(author.avatar).show();
+            };
+            testImage.src = author.photo;
+        } else {
+            // 没有照片，显示字母头像
+            authorPhoto.hide();
+            authorAvatarFallback.text(author.avatar).show();
+        }
+
+        // 定位卡片
+        const cardWidth = 320;
+        const cardHeight = 130;
+        let left = rect.left + rect.width / 2 - cardWidth / 2;
+        let top = rect.bottom + 15;
+
+        // 边界检查
+        if (left < 10) left = 10;
+        if (left + cardWidth > window.innerWidth - 10) {
+            left = window.innerWidth - cardWidth - 10;
+        }
+        if (top + cardHeight > window.innerHeight - 10) {
+            top = rect.top - cardHeight - 15;
+        }
+
+        card.css({
+            left: left + 'px',
+            top: top + 'px'
+        }).addClass('visible');
+    }
+
+    function hideAuthorCard() {
+        $('#authorCard').removeClass('visible');
+    }
+
+    // 全局变量控制卡片显示状态
+    let cardTimer = null;
+    let isCardHovered = false;
+    let isAuthorHovered = false;
+
+    // 显示卡片
+    function showCard(authorKey, element) {
+        clearTimeout(cardTimer);
+        showAuthorCard(authorKey, element);
+    }
+
+    // 隐藏卡片（带延迟）
+    function scheduleHideCard() {
+        clearTimeout(cardTimer);
+        cardTimer = setTimeout(function() {
+            if (!isCardHovered && !isAuthorHovered) {
+                hideAuthorCard();
+            }
+        }, 100);
+    }
+
+    // 事件监听
+    $(document).ready(function() {
+        // 作者悬停事件
+        $('.author-block a[data-author]').hover(
+            function() {
+                isAuthorHovered = true;
+                const authorKey = $(this).data('author');
+                showCard(authorKey, this);
+            },
+            function() {
+                isAuthorHovered = false;
+                scheduleHideCard();
+            }
+        );
+
+        // 作者卡片悬停保持显示
+        $('#authorCard').hover(
+            function() {
+                isCardHovered = true;
+                clearTimeout(cardTimer);
+            },
+            function() {
+                isCardHovered = false;
+                scheduleHideCard();
+            }
+        );
+
+        // 目录滚动高亮
+        $(window).scroll(updateTOCHighlight);
+        updateTOCHighlight();
+
+        // 滚动动画观察器
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+
+        const observer = new IntersectionObserver(function(entries) {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    const element = entry.target;
+
+                    if (element.classList.contains('innovation-card')) {
+                        element.classList.add('animate');
+                    }
+                    if (element.classList.contains('stat-card')) {
+                        element.classList.add('animate');
+                        // 启动数字计数动画
+                        const numberElement = element.querySelector('.stat-number');
+                        if (numberElement && !numberElement.classList.contains('animated')) {
+                            numberElement.classList.add('animated');
+                            const text = numberElement.textContent;
+                            let target;
+
+                            if (text.includes('%')) {
+                                target = parseFloat(text);
+                            } else if (text.includes('K')) {
+                                target = parseInt(text);
+                            } else if (text.includes('.')) {
+                                target = parseFloat(text);
+                            } else {
+                                target = parseInt(text);
+                            }
+
+                            numberElement.textContent = '0';
+                            animateCounter(numberElement, target);
+                        }
+                    }
+                    if (element.classList.contains('pipeline-step')) {
+                        element.classList.add('animate');
+                    }
+                    if (element.classList.contains('demo-item')) {
+                        element.classList.add('animate');
+                    }
+                    if (element.classList.contains('scroll-animate')) {
+                        element.classList.add('animate');
+                    }
+
+                    observer.unobserve(element);
+                }
+            });
+        }, observerOptions);
+
+        // 观察所有需要动画的元素
+        $('.innovation-card, .stat-card, .pipeline-step, .demo-item, .scroll-animate').each(function() {
+            observer.observe(this);
+        });
+    });
+
+    // 数字计数动画
+    function animateCounter(element, target, duration = 2000) {
+        let start = 0;
+        const increment = target / (duration / 16);
+        const timer = setInterval(function() {
+            start += increment;
+            if (start >= target) {
+                start = target;
+                clearInterval(timer);
+            }
+
+            // 处理不同类型的数字格式
+            if (target.toString().includes('.')) {
+                element.textContent = start.toFixed(3);
+            } else if (target.toString().includes('K')) {
+                element.textContent = Math.floor(start) + 'K';
+            } else if (target.toString().includes('%')) {
+                element.textContent = start.toFixed(1) + '%';
+            } else {
+                element.textContent = Math.floor(start);
+            }
+        }, 16);
+    }
+
+    // 平滑滚动
+    $('a[href^="#"]').on('click', function(event) {
+        var target = $(this.getAttribute('href'));
+        if( target.length ) {
+            event.preventDefault();
+            $('html, body').stop().animate({
+                scrollTop: target.offset().top - 100
+            }, 1000);
+        }
+    });
+
+    // 表格行悬停效果
+    $('.table tbody tr').hover(
+        function() {
+            $(this).css('background-color', '#f5f5f5');
+        },
+        function() {
+            $(this).css('background-color', '');
+        }
+    );
+
+    // 返回顶部按钮
+    const backToTop = $('<button class="back-to-top"><i class="fas fa-arrow-up"></i></button>');
+    $('body').append(backToTop);
+
+    $(window).scroll(function() {
+        if ($(this).scrollTop() > 300) {
+            $('.back-to-top').fadeIn();
+        } else {
+            $('.back-to-top').fadeOut();
+        }
+    });
+
+    $('.back-to-top').on('click', function() {
+        $('html, body').animate({scrollTop: 0}, 800);
+    });
+
+    // 添加返回顶部按钮样式
+    $('<style>')
+        .prop('type', 'text/css')
+        .html(`
+            .back-to-top {
+                position: fixed;
+                bottom: 30px;
+                right: 30px;
+                width: 50px;
+                height: 50px;
+                background: #3273dc;
+                color: white;
+                border: none;
+                border-radius: 50%;
+                cursor: pointer;
+                font-size: 20px;
+                box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+                transition: all 0.3s ease;
+                z-index: 1000;
+                display: none;
+            }
+            .back-to-top:hover {
+                background: #2366d1;
+                transform: translateY(-2px);
+                box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+            }
+        `)
+        .appendTo('head');
+
+    console.log('🚀 Enhanced CAD Modeling Website with Author Photos Loaded Successfully!');
+</script>
+
+</body>
+</html>
